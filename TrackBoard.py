@@ -7,7 +7,7 @@ import sys
 
 class TrackBoard:
     filename = ".tb"
-    extensions = ['.mp3', '.mp4']
+    extensions = ['.mp3', '.mp4', '.mkv']
 
     def __init__(self, dir_path):
         self.dir_path = dir_path

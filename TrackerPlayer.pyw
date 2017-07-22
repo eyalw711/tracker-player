@@ -5,6 +5,12 @@
 # registry (3): https://stackoverflow.com/questions/15030033/how-do-i-open-windows-registry-with-write-access-in-python
 # registry (4): https://stackoverflow.com/questions/10833710/windows-explorer-context-menus-with-sub-menus-using-pywin32
 
+
+# TODO:
+# 1) py2exe
+# 2) find all relevant media players vlc bsplayer...
+# 3) add bsplayer functionality
+
 import os
 from PlayerGui import PlayerGui
 from TrackBoard import TrackBoard
@@ -14,7 +20,8 @@ class TrackerPlayer:
     # all players we work with
     players = {
         'wmplayer': r"C:\Program Files\Windows Media Player",
-        'vlc':      r"C:\Program Files (x86)\VideoLAN\VLC"
+        'vlc':      r"C:\Program Files (x86)\VideoLAN\VLC",
+        'bsplayer': r"C:\Program Files (x86)\Webteh\BSPlayer"
     }
 
     def __init__(self):
@@ -31,10 +38,16 @@ class TrackerPlayer:
         p = Process(target = os.system, args=(r'vlc {1} "{0}"'.format(filename, fullscreen_str),))
         p.start()
 
+    def start_bsplay_on_file(self, filename, fullscreen=True):
+        fullscreen_str = '-fs' if fullscreen else ''
+        p = Process(target = os.system, args =(r'bsplayer "{}" {} -eend'.format(filename, fullscreen_str),))
+        p.start()
+
     def play_file(self, file: str):
         extensions = {
             '.mp3': lambda: self.start_wmplayer_on_file(filename=file),
-            '.mp4': lambda: self.start_vlc_on_file(filename=file)
+            '.mp4': lambda: self.start_vlc_on_file(filename=file),
+            '.mkv': lambda: self.start_bsplay_on_file(filename=file)
         }
         for k, v in extensions.items():
             if file.endswith(k):
